@@ -30,5 +30,39 @@ namespace SwashbuckleCustomOrderingControllersExample.Controllers
         {
             return Ok(new { type = "Proscenium" });
         }
+
+        [HttpOptions("optionsExample")]
+        public IActionResult OptionsExample()
+        {
+            return Ok();
+        }
+
+        [HttpPut("putExample")]
+        public IActionResult PutExample()
+        {
+            return Ok();
+        }
+        [HttpDelete("deleteExample")]
+        public IActionResult DeleteExample()
+        {
+            return Ok();
+        }
+
+        [HttpPost("postExample")]
+        public IActionResult PostExample()
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// Dummy call to show example of hidden item.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("something")]
+        [ApiExplorerSettings(GroupName = "Hidden")]
+        public IActionResult GetSomethingElse()
+        {
+            return Ok(new { something = "Anything" });
+        }
     }
 }

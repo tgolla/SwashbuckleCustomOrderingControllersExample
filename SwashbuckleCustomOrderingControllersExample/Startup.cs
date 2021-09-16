@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection;
 
 namespace SwashbuckleCustomOrderingControllersExample
@@ -30,7 +31,7 @@ namespace SwashbuckleCustomOrderingControllersExample
             services.AddControllers();
 
             // Used by alternate example of sort by controller and then HTTP method as ordered in array.
-            //string[] methodsOrder = new string[5] { "get", "post", "put", "patch", "delete", "options", "trace" };
+            //string[] methodsOrder = new string[7] { "get", "post", "put", "patch", "delete", "options", "trace" };
 
             SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
 
@@ -45,9 +46,13 @@ namespace SwashbuckleCustomOrderingControllersExample
 
                 // Alternate example of sort by controller and then HTTP method (alphabetical). 
                 //c.OrderActionsBy((apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}");
+                // Or...
+                //c.OrderActionsBy(apiDesc => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}_{apiDesc.HttpMethod}");
 
                 // Alternate example of sort by controller and then HTTP method as ordered in array defined above. 
                 //c.OrderActionsBy(apiDesc => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{Array.IndexOf(methodsOrder, apiDesc.HttpMethod.ToLower())}");
+                // Or...
+                //c.OrderActionsBy(apiDesc => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}_{Array.IndexOf(methodsOrder, apiDesc.HttpMethod.ToLower())}");
             });
         }
 
