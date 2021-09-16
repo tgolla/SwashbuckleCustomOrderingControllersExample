@@ -36,11 +36,11 @@ namespace SwashbuckleCustomOrderingControllersExample
 
             services.AddSwaggerGen(c =>
             {
+                // Sets the order action by to use the SwaggerControllerOrder attribute to reorder controllers in a non-alphabetical order.
                 // To see the difference between using the controller sort order and not, comment out the following line.
                 c.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
 
-                // Sets the order action by to use the SwaggerControllerOrder attribute to reorder controllers in a non-alphabetical order
-                // and removes an assigned group name (i.e. [ApiExplorerSettings(GroupName = "Hidden")]) from the sort order.
+                // Alternate example of sort by controller and removing an assigned group name (i.e. [ApiExplorerSettings(GroupName = "Hidden")]) from the sort order.
                 //c.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}_{apiDesc.RelativePath}");
 
                 // Alternate example of sort by controller and then HTTP method (alphabetical). 
