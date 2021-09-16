@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace SwashbuckleCustomOrderingControllersExample
 {
@@ -34,10 +29,30 @@ namespace SwashbuckleCustomOrderingControllersExample
         {
             services.AddControllers();
 
-            services.AddSwaggerGen();
+            // Used by alternate example of sort by controller and then HTTP method as ordered in array.
+            //string[] methodsOrder = new string[5] { "get", "post", "put", "patch", "delete", "options", "trace" };
+
+            SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
+
+            services.AddSwaggerGen(c =>
+            {
+                // Sets the order action by to use the SwaggerControllerOrder attribute to reorder controllers in a non-alphabetical order
+                // and removes an assigned group name (i.e. [ApiExplorerSettings(GroupName = "Hidden")]) from the sort order.
+                c.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}_{apiDesc.RelativePath}");
+
+                // Alternate example of sort by controller and then HTTP method (alphabetical). 
+                //c.OrderActionsBy((apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}");
+
+                // Alternate example of sort by controller and then HTTP method as ordered in array defined above. 
+                //c.OrderActionsBy(apiDesc => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{Array.IndexOf(methodsOrder, apiDesc.HttpMethod.ToLower())}");
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
