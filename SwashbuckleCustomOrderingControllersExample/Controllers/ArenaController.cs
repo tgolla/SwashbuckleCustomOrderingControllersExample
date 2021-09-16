@@ -9,6 +9,7 @@ namespace SwashbuckleCustomOrderingControllersExample.Controllers
 {
     [ApiController]
     [Route("theater/[controller]")]
+    [SwaggerControllerOrder(3)]
     public class ArenaController : ControllerBase
     {
         private readonly ILogger<ArenaController> logger;

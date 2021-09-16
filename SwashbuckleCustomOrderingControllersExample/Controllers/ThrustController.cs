@@ -6,6 +6,7 @@ namespace SwashbuckleCustomOrderingControllersExample.Controllers
 {
     [ApiController]
     [Route("theater/[controller]")]
+    [SwaggerControllerOrder(2)]
     public class ThrustController : ControllerBase
     {
         private readonly ILogger<ThrustController> logger;
